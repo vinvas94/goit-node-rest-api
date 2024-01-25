@@ -1,4 +1,4 @@
-import HttpError from "./HttpError.js";
+const { HttpError } = require("../helpers");
 
 const validateBody = (schema) => {
   const func = (req, _, next) => {
@@ -8,8 +8,7 @@ const validateBody = (schema) => {
     }
     next();
   };
-
   return func;
 };
 
-export default validateBody;
+module.exports = validateBody;

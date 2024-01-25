@@ -1,11 +1,55 @@
-import contactsService from "../services/contactsServices.js";
+const contacts = require("../services/contactsServices");
 
-export const getAllContacts = (req, res) => {};
+const { HttpError, ctrlWrapper } = require("../helpers");
 
-export const getOneContact = (req, res) => {};
+const getAllContacts = async (req, res) => {
+  const result = await contacts.getAllContacts();
+  res.json(result);
+};
 
-export const deleteContact = (req, res) => {};
+const getOneContact = async (req, res) => {
+  const { id } = req.params;
+  const result = await contacts.getOneContact(id);
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+  res.json(result);
+};
 
-export const createContact = (req, res) => {};
+const deleteContact = async (req, res) => {
+  const { id } = req.params;
+  const result = await contacts.deleteContact(id);
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+  res.json(result);
+};
 
-export const updateContact = (req, res) => {};
+const createContact = async (req, res) => {
+  const { name, email, phone } = req.body;
+  const result = await contacts.createContact(name, email, phone);
+  res.status(201).json(result);
+};
+
+const updateContact = async (req, res) => {
+  const { id } = req.params;
+  const updateData = req.body;
+  if (Object.keys(updateData).length === 0) {
+    return res
+      .status(400)
+      .json({ message: "Body must have at least one field" });
+  }
+  const result = await contacts.updateContact(id, updateData);
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+  res.json(result);
+};
+
+module.exports = {
+  getAllContacts: ctrlWrapper(getAllContacts),
+  getOneContact: ctrlWrapper(getOneContact),
+  deleteContact: ctrlWrapper(deleteContact),
+  createContact: ctrlWrapper(createContact),
+  updateContact: ctrlWrapper(updateContact),
+};
