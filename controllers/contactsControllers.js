@@ -44,7 +44,7 @@ const updateContact = async (req, res) => {
   if (!result) {
     throw HttpError(404, "Not found");
   }
-  res.json(result);
+  res.status(200).json(result);
 };
 
 const updateFavorite = async (req, res) => {
@@ -59,7 +59,7 @@ const updateFavorite = async (req, res) => {
   if (!result) {
     throw HttpError(404, "Not found");
   }
-  res.json(result);
+  res.status(200).json(result);
 };
 
 module.exports = {
