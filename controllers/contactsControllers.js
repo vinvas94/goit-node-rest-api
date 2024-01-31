@@ -21,6 +21,17 @@ const createContact = async (req, res) => {
   res.status(201).json(result);
 };
 
+const deleteContact = async (req, res) => {
+  const { id } = req.params;
+  const result = await Contact.findByIdAndDelete(id);
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+  res.json({
+    message: "Delete success",
+  });
+};
+
 const updateContact = async (req, res) => {
   const { id } = req.params;
   const updateData = req.body;
@@ -36,20 +47,15 @@ const updateContact = async (req, res) => {
   res.json(result);
 };
 
-const deleteContact = async (req, res) => {
-  const { id } = req.params;
-  const result = await Contact.findByIdAndDelete(id);
-  if (!result) {
-    throw HttpError(404, "Not found");
-  }
-  res.json({
-    message: "Delete success",
-  });
-};
-
 const updateFavorite = async (req, res) => {
   const { id } = req.params;
-  const result = await Book.findByIdAndUpdate(id, req.body, { new: true });
+  const updateData = req.body;
+  if (Object.keys(updateData).length === 0) {
+    return res
+      .status(400)
+      .json({ message: "Body must have at least one field" });
+  }
+  const result = await Contact.findByIdAndUpdate(id, updateData, { new: true });
   if (!result) {
     throw HttpError(404, "Not found");
   }
