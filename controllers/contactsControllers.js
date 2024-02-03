@@ -58,7 +58,7 @@ const updateContact = async (req, res) => {
   res.status(200).json(result);
 };
 
-const updateFavorite = async (req, res) => {
+const updateStatusContact = async (req, res) => {
   const { id } = req.params;
   const updateData = req.body;
   if (Object.keys(updateData).length === 0) {
@@ -79,5 +79,5 @@ module.exports = {
   deleteContact: ctrlWrapper(deleteContact),
   createContact: ctrlWrapper(createContact),
   updateContact: ctrlWrapper(updateContact),
-  updateFavorite: ctrlWrapper(updateFavorite),
+  updateStatusContact: ctrlWrapper(updateStatusContact),
 };
