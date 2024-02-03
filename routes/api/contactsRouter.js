@@ -28,6 +28,7 @@ contactsRouter.put(
   validateBody(schemas.updateContactSchema),
   ctrl.updateContact
 );
+
 contactsRouter.patch(
   "/:id/favorite",
   authenticate,
