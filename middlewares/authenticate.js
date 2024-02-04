@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const { User } = require("../db/user");
+const { User } = require("../db/users");
 
 const { HttpError } = require("../helpers");
 
