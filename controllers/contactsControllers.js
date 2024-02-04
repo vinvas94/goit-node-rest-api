@@ -18,8 +18,9 @@ const getAllContacts = async (req, res) => {
 };
 
 const getOneContact = async (req, res) => {
+  const { _id: owner } = req.user;
   const { id } = req.params;
-  const result = await Contact.findOne({ _id: id });
+  const result = await Contact.findOne({ _id: id, owner });
   if (!result) {
     throw HttpError(404, "Not found");
   }
@@ -33,8 +34,9 @@ const createContact = async (req, res) => {
 };
 
 const deleteContact = async (req, res) => {
+  const { _id: owner } = req.user;
   const { id } = req.params;
-  const result = await Contact.findByIdAndDelete(id);
+  const result = await Contact.findByIdAndDelete({ _id: id, owner });
   if (!result) {
     throw HttpError(404, "Not found");
   }
@@ -44,6 +46,7 @@ const deleteContact = async (req, res) => {
 };
 
 const updateContact = async (req, res) => {
+  const { _id: owner } = req.user;
   const { id } = req.params;
   const updateData = req.body;
   if (Object.keys(updateData).length === 0) {
@@ -51,7 +54,11 @@ const updateContact = async (req, res) => {
       .status(400)
       .json({ message: "Body must have at least one field" });
   }
-  const result = await Contact.findByIdAndUpdate(id, updateData, { new: true });
+  const result = await Contact.findByIdAndUpdate(
+    { _id: id, owner },
+    updateData,
+    { new: true }
+  );
   if (!result) {
     throw HttpError(404, "Not found");
   }
@@ -59,6 +66,7 @@ const updateContact = async (req, res) => {
 };
 
 const updateStatusContact = async (req, res) => {
+  const { _id: owner } = req.user;
   const { id } = req.params;
   const updateData = req.body;
   if (Object.keys(updateData).length === 0) {
@@ -66,7 +74,11 @@ const updateStatusContact = async (req, res) => {
       .status(400)
       .json({ message: "Body must have at least one field" });
   }
-  const result = await Contact.findByIdAndUpdate(id, updateData, { new: true });
+  const result = await Contact.findByIdAndUpdate(
+    { _id: id, owner },
+    updateData,
+    { new: true }
+  );
   if (!result) {
     throw HttpError(404, "Not found");
   }

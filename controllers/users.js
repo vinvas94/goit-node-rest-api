@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const { User } = require("../db/user");
+const { User } = require("../db/users");
 
 const { HttpError, ctrlWrapper } = require("../helpers");
 
@@ -20,9 +20,7 @@ const register = async (req, res) => {
   const newUser = await User.create({ ...req.body, password: hashPassword });
 
   res.status(201).json({
-    email: newUser.email,
-    name: newUser.name,
-    subscription: newUser.subscription,
+    user: { email: newUser.email, subscription: newUser.subscription },
   });
 };
 
@@ -43,7 +41,10 @@ const login = async (req, res) => {
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
   await User.findByIdAndUpdate(user._id, { token });
 
-  res.json({ token, email: user.email, subscription: user.subscription });
+  res.json({
+    token,
+    user: { email: user.email, subscription: user.subscription },
+  });
 };
 
 const getCurrent = async (req, res) => {
