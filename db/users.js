@@ -7,6 +7,7 @@ const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const passwordRequired = [true, "Set password for user"];
 const emailRequired = [true, "Email is required"];
 const subscriptionRequired = ["starter", "pro", "business"];
+const tokenRequired = [true, "Verify token is required"];
 
 const userSchema = new Schema(
   {
@@ -33,6 +34,15 @@ const userSchema = new Schema(
     avatarURL: {
       type: String,
     },
+
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: tokenRequired,
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -49,9 +59,14 @@ const loginSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
+const emailSchema = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required(),
+});
+
 const schemas = {
   registerSchema,
   loginSchema,
+  emailSchema,
 };
 
 const User = model("user", userSchema);
