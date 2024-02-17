@@ -13,6 +13,13 @@ contactsRouter.post(
   validateBody(schemas.registerSchema),
   ctrl.register
 );
+contactsRouter.get("/verify/:verificationToken", ctrl.verifyEmail);
+
+contactsRouter.get(
+  "/verify",
+  validateBody(schemas.emailSchema),
+  ctrl.resendVerifyEmail
+);
 
 contactsRouter.post("/login", validateBody(schemas.loginSchema), ctrl.login);
 
