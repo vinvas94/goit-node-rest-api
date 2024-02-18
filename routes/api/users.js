@@ -15,7 +15,7 @@ contactsRouter.post(
 );
 contactsRouter.get("/verify/:verificationToken", ctrl.verifyEmail);
 
-contactsRouter.get(
+contactsRouter.post(
   "/verify",
   validateBody(schemas.emailSchema),
   ctrl.resendVerifyEmail
